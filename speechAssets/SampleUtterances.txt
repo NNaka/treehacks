@@ -1,0 +1,12 @@
+DoSth  my choice is {choice}
+GameStartIntent start voice game
+
+KillBoy I wanna kill him
+SaveBoy I wanna save him
+KillBoy I want to kill him
+SaveBoy I want to save him
+KillBoy kill him
+SaveBoy save him
+
+ConfirmYes yes
+ConfirmNo no
