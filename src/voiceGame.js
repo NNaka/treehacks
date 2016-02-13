@@ -54,7 +54,7 @@ VoiceGame.prototype.intentHandlers = {
         var speechText = "I don't know.";
 
         if(intent.slots.choice && intent.slots.choice.value) {
-          speechText = 'You like' + intent.slots.choice.value;
+          speechText = 'You like ' + intent.slots.choice.value;
           // switch (intent.slots.choice.value) {
           //   case 'apple' : speechText = 'You like apples.';break;
           //   case 'orange': speechText = 'You like oranges.';break;
