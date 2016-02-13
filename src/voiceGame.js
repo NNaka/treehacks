@@ -23,19 +23,6 @@ VoiceGame.prototype.eventHandlers.onSessionStarted = function (sessionStartedReq
     // any initialization logic goes here
 };
 
-VoiceGame.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
-    console.log("VoiceGame onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
-    var speechOutput = "Welcome to the Alexa Skills Kit, you can say hello";
-    var repromptText = "You can say hello";
-    response.ask(speechOutput, repromptText);
-};
-
-VoiceGame.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
-    console.log("VoiceGame onSessionEnded requestId: " + sessionEndedRequest.requestId
-        + ", sessionId: " + session.sessionId);
-    // any cleanup logic goes here
-};
-
 /**
  * If the user launches without specifying an intent, route to the correct function.
  */
@@ -44,6 +31,11 @@ VoiceGame.prototype.eventHandlers.onLaunch = function (launchRequest, session, r
     response.tell('Game Lanuch.');
 };
 
+VoiceGame.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest, session) {
+    console.log("VoiceGame onSessionEnded requestId: " + sessionEndedRequest.requestId
+        + ", sessionId: " + session.sessionId);
+    // any cleanup logic goes here
+};
 
 VoiceGame.prototype.intentHandlers = {
     "GameStartIntent": function (intent, session, response) {

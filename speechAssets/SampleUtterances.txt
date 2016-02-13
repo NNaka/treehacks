@@ -1,1 +1,1 @@
-DoSth  I like {choice}
+DoSth  In the game, my choice is {choice}
