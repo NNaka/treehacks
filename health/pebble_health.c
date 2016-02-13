@@ -40,6 +40,7 @@ static int get_steps() {
     // Health data is not available here
     bool any_data_available = false;
 #endif
+    
 }
 
 int main() {
