@@ -1,0 +1,34 @@
+{
+  "intents": [
+    {
+      "intent": "GameStartIntent"
+    },
+    {
+      "intent": "SaveBoy"
+    },
+    {
+      "intent": "KillBoy"
+    },
+    {
+      "intent": "ConfirmYes"
+    },
+    {
+      "intent": "ConfirmNo"
+    },
+    {
+      "intent": "DoSth",
+      "slots": [
+        {
+          "name": "choice",
+          "type": "LIST_OF_FRUITS"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
