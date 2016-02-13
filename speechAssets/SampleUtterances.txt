@@ -1,1 +1,2 @@
-DoSth  In the game, my choice is {choice}
+DoSth  my choice is {choice}
+GameStartIntent start voice game
