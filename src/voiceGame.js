@@ -1,4 +1,4 @@
-var APP_ID = undefined; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+var APP_ID = "amzn1.echo-sdk-ams.app.d33d184a-1d5e-4a34-9867-3b8b173e1467"; //replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 
 /**
  * The AlexaSkill prototype and helper functions
