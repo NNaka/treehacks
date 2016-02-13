@@ -41,12 +41,14 @@ VoiceGame.prototype.intentHandlers = {
 
     "SaveBoy": function (intent, session, response) {
       session.attributes.choice = 'save';
-      response.ask(undefined, "Do you really want to save him?");
+      var res = "Do you really want to save him?";
+      response.ask(res, res);
     },
 
     "KillBoy": function (intent, session, response) {
       session.attributes.choice = 'kill';
-      response.ask(undefined, "Do you really want to kill him?");
+      var res = "Do you really want to kill him?";
+      response.ask(res, res);
     },
 
     "ConfirmYes": function (intent, session, response) {
