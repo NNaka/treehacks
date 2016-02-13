@@ -4,7 +4,13 @@
       "intent": "GameStartIntent"
     },
     {
-      "intent": "DoSth"
+      "intent": "DoSth",
+      "slots": [
+        {
+          "name": "choice",
+          "type": "LIST_OF_FRUITS"
+        }
+      ]
     },
     {
       "intent": "AMAZON.StopIntent"
