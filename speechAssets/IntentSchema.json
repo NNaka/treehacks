@@ -4,6 +4,18 @@
       "intent": "GameStartIntent"
     },
     {
+      "intent": "SaveBoy"
+    },
+    {
+      "intent": "KillBoy"
+    },
+    {
+      "intent": "ConfirmYes"
+    },
+    {
+      "intent": "ConfirmNo"
+    },
+    {
       "intent": "DoSth",
       "slots": [
         {
