@@ -39,8 +39,10 @@ VoiceGame.prototype.intentHandlers = {
     "ConfirmYes": function (intent, session, response) {
       if(!session.attributes.stage) {
         session.attributes.stage = 0;
+      } else if (session.attributes.stage = 8) {
+        response.tell('Boom! Game end.');
       }
-      var url = 'https://s3.amazonaws.com/voicegame/0'+session.attributes.stage+'.m4a';
+      var url = 'https://s3.amazonaws.com/voicegame/0'+session.attributes.stage+'.mp3';
       session.attributes.stage ++;
 
       var speechOutput = {
