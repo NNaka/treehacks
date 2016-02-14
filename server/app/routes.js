@@ -17,12 +17,7 @@ module.exports = function(app) {
   });
  });
 
- 
-
-
-
- // frontend routes =========================================================
- app.get('*', function(req, res) {
-  res.sendfile('./public/login.html');
- });
+  app.get('/person', function(req, res) {
+    res.sendfile('./public/person.html');
+  });
 }
