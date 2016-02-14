@@ -8,9 +8,16 @@ function makeGraphs(error, apiData) {
 	var dataSet = apiData;
 	var dateFormat = d3.time.format("%m/%d/%Y");
 	dataSet.forEach(function(d) {
-		d.date_posted = dateFormat.parse(d.date_posted);
-				d.date_posted.setDate(1);
-		d.total_donations = +d.total_donations;
+		d.date = dateFormat.parse(d.date);
+		d.date.setDate(1);
+		// d.total_donations = +d.total_donations;
+        if (d.progress > 16){
+            d.progress = "Completed";
+        } else if (d.progress > 8) {
+            d.progress = "Halfway";
+        } else {
+            d.progress = "Begin";
+        }
 	});
 
 	//Create a Crossfilter instance
@@ -28,15 +35,16 @@ function makeGraphs(error, apiData) {
 	//Calculate metrics
 	var projectsByDate = datePosted.group(); 
 	var projectsByMentalScore = mentalScore.group(); 
-	var projectsByResourceType = gender.group();
-	var projectsByFundingStatus = progress.group();
-	var projectsByPovertyLevel = completion.group();
-	var gameNameGroup = game_name.group();
+    var projectsByMentalState = mentalState.group();
+	var projectsByGender = gender.group();
+	var projectsByProgress = progress.group();
+	var projectsByCompletion = completion.group();
+	var gameNameGroup = gameName.group();
 
 	var all = ndx.groupAll();
 
 	//Calculate Groups
-	var totalMentalState = state.group().reduceSum(function(d) {
+	var totalMentalState = mentalState.group().reduceSum(function(d) {
 		return d.mental_state;
 	});
 
@@ -51,21 +59,22 @@ function makeGraphs(error, apiData) {
 	var netTotalDonations = ndx.groupAll().reduceSum(function(d) {return d.mental_state;});
 
 	//Define threshold values for data
-	var minDate = datePosted.bottom(1)[0].date_posted;
-	var maxDate = datePosted.top(1)[0].date_posted;
+	var minDate = datePosted.bottom(1)[0].date;
+	var maxDate = datePosted.top(1)[0].date;
 
 console.log(minDate);
 console.log(maxDate);
 
     //Charts
 	var dateChart = dc.lineChart("#date-chart");
-	var mentalScoreChart = dc.rowChart("#mental_score-chart");
+	var mentalScoreChart = dc.rowChart("#mental-score-chart");
+    var mentalStateChart = dc.rowChart("#mental-state-chart");
 	var genderChart = dc.rowChart("#gender-chart");
 	var progressChart = dc.pieChart("#progress-chart");
-	var completionChart = dc.rowChart("#completion-chart");
+	// var completionChart = dc.rowChart("#completion-chart");
 	var totalProjects = dc.numberDisplay("#total-projects");
-	var netDonations = dc.numberDisplay("#net-donations");
-	var stateDonations = dc.barChart("#state-donations");
+	var totalSteps = dc.numberDisplay("#total-steps");
+	var completionChart = dc.barChart("#completion");
 
 
   selectField = dc.selectMenu('#menuselect')
@@ -82,10 +91,10 @@ console.log(maxDate);
 		.valueAccessor(function(d){return d; })
 		.group(all);
 
-	netDonations
+	totalSteps
 		.formatNumber(d3.format("d"))
 		.valueAccessor(function(d){return d; })
-		.group(netTotalDonations)
+		.group(projectsByCompletion)
 		.formatNumber(d3.format(".3s"));
 
 	dateChart
@@ -107,46 +116,52 @@ console.log(maxDate);
         //.width(300)
         .height(220)
         .dimension(gender)
-        .group(projectsByResourceType)
+        .group(projectsByGender)
         .elasticX(true)
         .xAxis().ticks(5);
 
-	completionChart
-		//.width(300)
-		.height(220)
-        .dimension(completion)
-        .group(projectsByPovertyLevel)
-        .xAxis().ticks(4);
+	// completionChart
+	// 	//.width(300)
+	// 	.height(220)
+ //        .dimension(completion)
+ //        .group(projectsByCompletion)
+ //        .xAxis().ticks(4);
 
-	gradeLevelChart
+	mentalScoreChart
 		//.width(300)
 		.height(220)
         .dimension(mentalScore)
         .group(projectsByMentalScore)
         .xAxis().ticks(4);
 
-  
-          progressChart
-            .height(220)
-            //.width(350)
-            .radius(90)
-            .innerRadius(40)
-            .transitionDuration(1000)
-            .dimension(progress)
-            .group(projectsByFundingStatus);
+    mentalStateChart
+        //.width(300)
+        .height(220)
+        .dimension(mentalState)
+        .group(projectsByMentalState)
+        .xAxis().ticks(4);
+
+      progressChart
+        .height(220)
+        //.width(350)
+        .radius(90)
+        .innerRadius(40)
+        .transitionDuration(1000)
+        .dimension(progress)
+        .group(projectsByProgress);
 
 
-    stateDonations
+    completionChart
     	//.width(800)
         .height(220)
         .transitionDuration(1000)
-        .dimension(gameName)
-        .group(totalMentalState)
+        .dimension(completion)
+        .group(gameNameGroup)
         .margins({top: 10, right: 50, bottom: 30, left: 50})
         .centerBar(false)
         .gap(5)
         .elasticY(true)
-        .x(d3.scale.ordinal().domain(gameName))
+        .x(d3.scale.ordinal().domain(completion))
         .xUnits(dc.units.ordinal)
         .renderHorizontalGridLines(true)
         .renderVerticalGridLines(true)

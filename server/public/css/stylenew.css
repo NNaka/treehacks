@@ -83,7 +83,7 @@ transform: translateX(-50%);
                 padding-bottom: 0px;
             }
 
-        #net-donations {
+        #total-steps {
                 background: #33CC99;
                 width: 200px;
                 position:relative;
@@ -110,9 +110,6 @@ transform: translateX(-50%);
 
 
             }
-
-
-
 
 .background {
     fill: #FFFFFF;
