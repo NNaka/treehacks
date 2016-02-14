@@ -39,8 +39,8 @@ VoiceGame.prototype.intentHandlers = {
     "ConfirmYes": function (intent, session, response) {
       if(!session.attributes.stage) {
         session.attributes.stage = 1;
-      } else if (session.attributes.stage === 8) {
-        response.tell('Boom! The game ends.');
+      } else if (session.attributes.stage === 9) {
+        response.tell('The game ends.');
         return;
       }
 
