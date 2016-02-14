@@ -4,7 +4,7 @@ ConfirmYes of course
 ConfirmYes find a cave
 ConfirmYes fish
 ConfirmYes good night
-ConfirmYes Let’s explore
+ConfirmYes let us explore
 
 
 

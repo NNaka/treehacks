@@ -37,6 +37,9 @@ VoiceGame.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest
 
 VoiceGame.prototype.intentHandlers = {
     "ConfirmYes": function (intent, session, response) {
+      if(!session.attributes.stage) {
+        session.attributes.stage = 0;
+      }
       var url = 'https://s3.amazonaws.com/voicegame/0'+session.attributes.stage+'.m4a';
       session.attributes.stage ++;
 
