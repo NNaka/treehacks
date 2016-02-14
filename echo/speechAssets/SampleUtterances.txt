@@ -1,12 +1,16 @@
-DoSth  my choice is {choice}
-GameStartIntent start voice game
-
-KillBoy I wanna kill him
-SaveBoy I wanna save him
-KillBoy I want to kill him
-SaveBoy I want to save him
-KillBoy kill him
-SaveBoy save him
-
 ConfirmYes yes
+ConfirmYes ok
+ConfirmYes of course
+ConfirmYes find a cave
+ConfirmYes fish
+ConfirmYes good night
+ConfirmYes Let’s explore
+
+
+
 ConfirmNo no
+ConfirmNo of course not
+
+
+AMAZON.StopIntent stop
+AMAZON.StopIntent stop game

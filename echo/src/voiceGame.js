@@ -25,6 +25,7 @@ VoiceGame.prototype.eventHandlers.onSessionStarted = function (sessionStartedReq
 
 VoiceGame.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
     console.log("onLaunch requestId: " + launchRequest.requestId + ", sessionId: " + session.sessionId);
+    session.attributes.stage = 1;
     handleWelcomeRequest(response);
 };
 
@@ -35,73 +36,28 @@ VoiceGame.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest
 };
 
 VoiceGame.prototype.intentHandlers = {
-    "GameStartIntent": function (intent, session, response) {
-        response.tell('Game Start. What do you like?');
-    },
-
-    "SaveBoy": function (intent, session, response) {
-      session.attributes.choice = 'save';
-      var res = "Do you really want to save him?";
-      response.ask(res, res);
-    },
-
-    "KillBoy": function (intent, session, response) {
-      session.attributes.choice = 'kill';
-      var res = "Do you really want to kill him?";
-      response.ask(res, res);
-    },
-
     "ConfirmYes": function (intent, session, response) {
-      if (session.attributes.choice) {
-        response.tell('You have ' + session.attributes.choice + 'd him.');
-      }
-      else {
-        response.tell('It is a wrong choice.');
-      }
+      var url = 'https://s3.amazonaws.com/voicegame/0'+session.attributes.stage+'.m4a';
+      session.attributes.stage ++;
+
+      var speechOutput = {
+            speech: "<speak>"
+                + "<audio src='" + url + "'/>"
+                + "</speak>",
+            type: AlexaSkill.speechOutputType.SSML
+        };
+
+      response.ask(speechOutput, speechOutput);
     },
 
     "ConfirmNo": function (intent, session, response) {
-      if (session.attributes.choice) {
-        response.tell('You have cancelled your choice.');
-      }
-      else {
-        response.tell('It is a wrong choice.');
-      }
-    },
-
-    "DoSth": function (intent, session, response) {
-        var speechText = "I don't know.";
-
-        if(intent.slots.choice && intent.slots.choice.value) {
-          speechText = 'You like ' + intent.slots.choice.value;
-          // switch (intent.slots.choice.value) {
-          //   case 'apple' : speechText = 'You like apples.';break;
-          //   case 'orange': speechText = 'You like oranges.';break;
-          //   default: speechText = 'What are you saying?';
-          // }
-        }
-
-        var speechOutput = {
-            speech: speechText,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        var repromptOutput = {
-            speech: speechText,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
-        // For the repromptText, play the speechOutput again
-        response.ask(speechOutput, repromptOutput);
+      response.tell('You have killed her!');
     },
 
     "AMAZON.StopIntent": function (intent, session, response) {
-        var speechOutput = "Stop Game";
+        var speechOutput = "Game stop";
         response.tell(speechOutput);
     },
-
-    "AMAZON.CancelIntent": function (intent, session, response) {
-        var speechOutput = "Cancel Game";
-        response.tell(speechOutput);
-    }
 };
 
 // Create the handler that responds to the Alexa Request.
@@ -113,19 +69,11 @@ exports.handler = function (event, context) {
 
 
 function handleWelcomeRequest(response) {
-    var whichAction = "There is a cute boy. So you wanna kill him or save him? ";
-    var speechOutput = {
-            speech: "<speak>Welcome to the voice game. "
-                + "<audio src='https://s3.amazonaws.com/ask-storage/tidePooler/OceanWaves.mp3'/>"
-                + whichAction
-                + "</speak>",
-            type: AlexaSkill.speechOutputType.SSML
-        },
-        repromptOutput = {
-            speech: "The game is waiting for you."
-                + whichAction,
-            type: AlexaSkill.speechOutputType.PLAIN_TEXT
-        };
+    var outputText = "Welcome to metal health assistant. I am waiting for you. You looks nice today. Let's play some interesting games together.";
+    var output = {
+      speech: outputText,
+      type: AlexaSkill.speechOutputType.PLAIN_TEXT
+    };
 
-    response.ask(speechOutput, repromptOutput);
+    response.ask(output, output);
 }
