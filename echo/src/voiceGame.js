@@ -38,19 +38,32 @@ VoiceGame.prototype.eventHandlers.onSessionEnded = function (sessionEndedRequest
 VoiceGame.prototype.intentHandlers = {
     "ConfirmYes": function (intent, session, response) {
       if(!session.attributes.stage) {
-        session.attributes.stage = 0;
-      } else if (session.attributes.stage = 8) {
-        response.tell('Boom! Game end.');
+        session.attributes.stage = 1;
+      } else if (session.attributes.stage === 8) {
+        response.tell('Boom! The game ends.');
+        return;
       }
-      var url = 'https://s3.amazonaws.com/voicegame/0'+session.attributes.stage+'.mp3';
+
+      var url = 'https://s3.amazonaws.com/voicegame/l0'+ session.attributes.stage +'.mp3';
       session.attributes.stage ++;
 
+
       var speechOutput = {
-            speech: "<speak>"
-                + "<audio src='" + url + "'/>"
-                + "</speak>",
+        // speech: "<speak>Welcome to the voice game. "
+        //         + "<audio src='https://s3.amazonaws.com/voicegame/l01.mp3'/> blablabla"
+        //         + "</speak>",
+         speech: "<speak>"
+              + "<audio src='" + url + "'/>"
+              + "</speak>",
             type: AlexaSkill.speechOutputType.SSML
         };
+
+      if(session.attributes.stage === 2) {
+        speechOutput.speech = "<speak>"
+              + "<audio src='https://s3.amazonaws.com/ask-storage/tidePooler/OceanWaves.mp3'/>"
+              + "<audio src='" + url + "'/>"
+              + "</speak>";
+      }
 
       response.ask(speechOutput, speechOutput);
     },
@@ -80,5 +93,14 @@ function handleWelcomeRequest(response) {
       type: AlexaSkill.speechOutputType.PLAIN_TEXT
     };
 
-    response.ask(output, output);
+    var speechOutput = {
+         speech: "<speak>"
+              + "Hello <audio src='https://s3.amazonaws.com/voicegame/l01.mp3'/> Howdy"
+              + "</speak>",
+            type: AlexaSkill.speechOutputType.SSML
+        };
+
+      response.ask(speechOutput, speechOutput);
+
+    // response.ask(output, output);
 }
