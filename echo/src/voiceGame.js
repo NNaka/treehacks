@@ -44,7 +44,7 @@ VoiceGame.prototype.intentHandlers = {
         return;
       }
 
-      var url = 'https://s3.amazonaws.com/voicegame/l0'+ session.attributes.stage +'.mp3';
+      var url = 'https://s3.amazonaws.com/voicegame/0'+ session.attributes.stage +'.mp3';
       session.attributes.stage ++;
 
 
@@ -93,14 +93,14 @@ function handleWelcomeRequest(response) {
       type: AlexaSkill.speechOutputType.PLAIN_TEXT
     };
 
-    var speechOutput = {
-         speech: "<speak>"
-              + "Hello <audio src='https://s3.amazonaws.com/voicegame/l01.mp3'/> Howdy"
-              + "</speak>",
-            type: AlexaSkill.speechOutputType.SSML
-        };
+    // var speechOutput = {
+    //      speech: "<speak>"
+    //           + "Hello <audio src='https://s3.amazonaws.com/voicegame/l01.mp3'/> Howdy"
+    //           + "</speak>",
+    //         type: AlexaSkill.speechOutputType.SSML
+    //     };
 
-      response.ask(speechOutput, speechOutput);
+    //   response.ask(speechOutput, speechOutput);
 
-    // response.ask(output, output);
+    response.ask(output, output);
 }
