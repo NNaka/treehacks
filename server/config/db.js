@@ -1,3 +1,3 @@
 module.exports = {
-	urlSubjectViews: 'mongodb://localhost:27017/voicegames',
+	urlSubjectViews: 'mongodb://localhost:27017/sphinx',
 }
