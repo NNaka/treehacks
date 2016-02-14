@@ -19,39 +19,36 @@ function makeGraphs(error, apiData) {
 	//Define Dimensions
 	var datePosted = ndx.dimension(function(d) { return d.date; });
 	var mentalScore = ndx.dimension(function(d) { return d.mental_score; });
-	var resourceType = ndx.dimension(function(d) { return d.resource_type; });
-	var fundingStatus = ndx.dimension(function(d) { return d.funding_status; });
-	var povertyLevel = ndx.dimension(function(d) { return d.poverty_level; });
-	var game = ndx.dimension(function(d) { return d.game; });
-	var totalDonations  = ndx.dimension(function(d) { return d.total_donations; });
-
+	var gender = ndx.dimension(function(d) { return d.gender; });
+	var progress = ndx.dimension(function(d) { return d.progress; });
+	var completion = ndx.dimension(function(d) { return d.completion; });
+	var gameName = ndx.dimension(function(d) { return d.game_name; });
+	var mentalState  = ndx.dimension(function(d) { return d.mental_state; });
 
 	//Calculate metrics
 	var projectsByDate = datePosted.group(); 
 	var projectsByMentalScore = mentalScore.group(); 
-	var projectsByResourceType = resourceType.group();
-	var projectsByFundingStatus = fundingStatus.group();
-	var projectsByPovertyLevel = povertyLevel.group();
-	var gameGroup = game.group();
+	var projectsByResourceType = gender.group();
+	var projectsByFundingStatus = progress.group();
+	var projectsByPovertyLevel = completion.group();
+	var gameNameGroup = game_name.group();
 
 	var all = ndx.groupAll();
 
 	//Calculate Groups
-	var totalDonationsState = state.group().reduceSum(function(d) {
-		return d.total_donations;
+	var totalMentalState = state.group().reduceSum(function(d) {
+		return d.mental_state;
 	});
 
-	var totalDonationsGrade = mentalScore.group().reduceSum(function(d) {
-		return d.grade_level;
+	var totalMentalScore = mentalScore.group().reduceSum(function(d) {
+		return d.mental_score;
 	});
 
-	var totalDonationsFundingStatus = fundingStatus.group().reduceSum(function(d) {
-		return d.funding_status;
+	var totalProgress = progress.group().reduceSum(function(d) {
+		return d.progress;
 	});
 
-
-
-	var netTotalDonations = ndx.groupAll().reduceSum(function(d) {return d.total_donations;});
+	var netTotalDonations = ndx.groupAll().reduceSum(function(d) {return d.mental_state;});
 
 	//Define threshold values for data
 	var minDate = datePosted.bottom(1)[0].date_posted;
@@ -62,18 +59,18 @@ console.log(maxDate);
 
     //Charts
 	var dateChart = dc.lineChart("#date-chart");
-	var mentalScoreChart = dc.rowChart("#grade-chart");
-	var resourceTypeChart = dc.rowChart("#resource-chart");
-	var fundingStatusChart = dc.pieChart("#funding-chart");
-	var povertyLevelChart = dc.rowChart("#poverty-chart");
+	var mentalScoreChart = dc.rowChart("#mental_score-chart");
+	var genderChart = dc.rowChart("#gender-chart");
+	var progressChart = dc.pieChart("#progress-chart");
+	var completionChart = dc.rowChart("#completion-chart");
 	var totalProjects = dc.numberDisplay("#total-projects");
 	var netDonations = dc.numberDisplay("#net-donations");
 	var stateDonations = dc.barChart("#state-donations");
 
 
   selectField = dc.selectMenu('#menuselect')
-        .dimension(game)
-        .group(gameGroup); 
+        .dimension(gameName)
+        .group(gameNameGroup); 
 
        dc.dataCount("#row-selection")
         .dimension(ndx)
@@ -106,18 +103,18 @@ console.log(maxDate);
 		.xAxisLabel("Year")
 		.yAxis().ticks(6);
 
-	resourceTypeChart
+	genderChart
         //.width(300)
         .height(220)
-        .dimension(resourceType)
+        .dimension(gender)
         .group(projectsByResourceType)
         .elasticX(true)
         .xAxis().ticks(5);
 
-	povertyLevelChart
+	completionChart
 		//.width(300)
 		.height(220)
-        .dimension(povertyLevel)
+        .dimension(completion)
         .group(projectsByPovertyLevel)
         .xAxis().ticks(4);
 
@@ -129,13 +126,13 @@ console.log(maxDate);
         .xAxis().ticks(4);
 
   
-          fundingStatusChart
+          progressChart
             .height(220)
             //.width(350)
             .radius(90)
             .innerRadius(40)
             .transitionDuration(1000)
-            .dimension(fundingStatus)
+            .dimension(progress)
             .group(projectsByFundingStatus);
 
 
@@ -143,13 +140,13 @@ console.log(maxDate);
     	//.width(800)
         .height(220)
         .transitionDuration(1000)
-        .dimension(game)
-        .group(totalDonationsState)
+        .dimension(gameName)
+        .group(totalMentalState)
         .margins({top: 10, right: 50, bottom: 30, left: 50})
         .centerBar(false)
         .gap(5)
         .elasticY(true)
-        .x(d3.scale.ordinal().domain(game))
+        .x(d3.scale.ordinal().domain(gameName))
         .xUnits(dc.units.ordinal)
         .renderHorizontalGridLines(true)
         .renderVerticalGridLines(true)
